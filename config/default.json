@@ -1,0 +1,9 @@
+{
+    "PORT": 3000,
+    "DB_CONNECTION": "mongodb://localhost:27017/agni_dental",
+    "DB_PRODUCTION": "mongodb+srv://jikkz:RDB82ybONmRqQ7HE@cluster0.epe1amm.mongodb.net/agni_dental",
+    "JWT_EXPIRE": "90d",
+    "JWT_SECRET": "jwt_secret_key",
+    "COOKIE_EXPIRES": 90,
+    "FRONT_END": "https://kind-sand-0154d4f1e.5.azurestaticapps.net"
+}
