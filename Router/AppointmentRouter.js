@@ -5,7 +5,7 @@ route = express.Router();
 
 route.post('/', AppointmentController.createAppointment);
 route.get('/getAllTime/:date', AppointmentController.filterTime);
-route.use(authController.isLoggedIn);
+// route.use(authController.isLoggedIn);
 route.get('/:paginate', AppointmentController.getAllAppointment);
 route.patch('/updateAcceptance/:id', AppointmentController.updateAppointmentAcceptance);
 route.get('/search/:name/:paginate', AppointmentController.searchAppointment);
