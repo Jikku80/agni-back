@@ -6,7 +6,7 @@ const route = express.Router();
 
 route.get('/', BlogController.getAllBlog);
 route.get('/getOneBlog/:id', BlogController.getOneBlog);
-route.use(AuthController.isLoggedIn);
+// route.use(AuthController.isLoggedIn);
 route.post('/', BlogController.createBlog);
 route.patch('/updateBlog/:id', BlogController.updateBlog);
 route.delete('/deleteBlog/:id', BlogController.deleteBlog);

@@ -5,7 +5,7 @@ const AuthController = require('../Controllers/AuthControllers');
 
 const route = express.Router();
 
-route.use(AuthController.isLoggedIn);
+// route.use(AuthController.isLoggedIn);
 route.get('/', PatientRecordController.getAllPatientRecord);
 route.post('/createRecord/:id', PatientRecordController.createPatientRecord);
 route.get('/getOnePatientRecords/:id', PatientRecordController.getOnePatientRecord);

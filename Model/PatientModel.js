@@ -5,14 +5,27 @@ const patientSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    opdno:{
+        type: String,
+        required: true
+    },
+    branch: {
+        type: String,
+        required: true
+    },
+    uopd:{
+        type: String,
+        required: true,
+        unique: true,
+        lowercase: true
+    },
     email : {
         type: String,
         unique : true
     },
     phone : {
         type: Number,
-        required: true,
-        unique : true
+        required: true
     },
     address : {
         type : String,

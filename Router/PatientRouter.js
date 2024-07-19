@@ -5,7 +5,7 @@ const AuthController = require('../Controllers/AuthControllers');
 
 const route = express.Router();
 
-route.use(AuthController.isLoggedIn);
+// route.use(AuthController.isLoggedIn);
 route.get('/getAll/:paginate', PatientController.getAllPatient);
 route.post('/', PatientController.createPatient);
 route.get('/byPhone/:phone', PatientController.getPatientByPhone);

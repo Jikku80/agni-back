@@ -9,11 +9,11 @@ exports.createPatient = async(req, res) => {
         if (!req.body.age) return res.status(400).json({message: "Age must be provided!"});
         if (!req.body.gender) return res.status(400).json({message: "Gender must be provided"})
         if (!req.body.address) return res.status(400).json({message: "Address must be provided!"});
+        if (!req.body.opdno) return res.status(400).json({message: "Please provide patient opd no!"})
+        if (!req.body.branch) return res.status(400).json({message: "Please provide a branch"});
         
         const emaillistedPatient = await Patient.findOne({email : req.body.email});
         if (emaillistedPatient) return res.status(400).json({message: 'Patient with this email already listed!'})
-        const phonelistedPatient = await Patient.findOne({phone : req.body.phone});
-        if (phonelistedPatient) return res.status(400).json({message: 'Patient with this phone number already listed!'})
         const patient = await Patient.create({
             name : req.body.name,
             phone : req.body.phone,
@@ -21,6 +21,9 @@ exports.createPatient = async(req, res) => {
             age : req.body.age,
             gender : req.body.gender,
             address : req.body.address,
+            opdno: req.body.opdno,
+            uopd: `${req.body.branch}-${req.body.opdno}`,
+            branch: req.body.branch,
             createdAt: Date.now()
         }).then(async (item) => {
             await PatientRecord.create({
@@ -66,10 +69,17 @@ exports.getOnePatient = async(req, res) => {
 exports.getPatientByPhone = async(req,res) => {
     try{
         if (!req.params.phone) return res.status(400).json({message: "Please provide a number!"});
-        const patient = await Patient.findOne({phone : req.params.phone}, 'name -_id');
-        console.log(patient);
-        if (!patient) return res.status(400).json({message: "No patient found !"});
-        res.status(200).json({patient});
+        const lower = (req.params.phone).toLowerCase();
+        await Patient.find().then(items => {
+            items.forEach(item => {
+                if (item.uopd == lower) {
+                    const patient = item.name;
+                    res.status(200).json({patient});
+                }else{
+                    return res.status(400).json({message: "No patient found !"});
+                }
+            })
+        });
     }catch(err){
         console.log('Error!!!!', err)
     }
@@ -83,6 +93,8 @@ exports.updatePatient = async(req, res) => {
         if (!req.body.gender) return res.status(400).json({message: "Gender must be provided"})
         if (!req.body.address) return res.status(400).json({message: "Address must be provided!"});
         if (!req.params.id) return res.status(400).json({message: "Please provide a id!"});
+        if (!req.body.opdno) return res.status(400).json({message: "Please provide patient opd no!"})
+        if (!req.body.branch) return res.status(400).json({message: "Please provide a branch"});
 
         await Patient.findByIdAndUpdate(req.params.id, req.body, {new : true})
         const patient = await Patient.find().sort({createdAt: -1});
@@ -123,7 +135,7 @@ exports.searchPatient = async(req, res) => {
             items.forEach(item => {
                 const name = (item.name).toLowerCase();
                 const phone  = item.phone
-                if (name.includes(searchVal) || phone == searchVal) return patient.push(item);
+                if (name.includes(searchVal) || phone == searchVal || item.branch == searchVal || item.uopd == searchVal) return patient.push(item);
             })
         })
         const totalPage = Math.ceil(patient.length / pageSize);

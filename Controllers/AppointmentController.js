@@ -8,7 +8,7 @@ exports.createAppointment = async (req, res) => {
     if (!req.body.date) return res.status(400).json({"message": "Please provide an appointment date"})
     if (!req.body.time) return res.status(400).json({"message": "Please provide a time for your appointment!"})
     if (!req.body.specialist) return res.status(400).json({message: "Please provide a specialist!"})
-
+    if (!req.body.branch) return res.status(400).json({message: "Please select a branch!"})
     try{
         const appointment = await Appointment.create(req.body)
         res.status(201).json({appointment});
